@@ -1,0 +1,215 @@
+Satisfaction
+A PEN BY ninivert
+ Run
+ Fork
+ Settings
+ Change View
+Log In Sign Up
+×
+
+HTML
+ 
+HTML Options
+
+1
+#wrapper.container
+2
+  h1 MOMO.INC
+3
+  p
+4
+    b
+5
+      small [NOUN]  
+6
+    i Welcome to momo.inc animation space 
+7
+    
+8
+    
+CSS
+ 
+CSS Options
+
+1
+@import url("https://fonts.googleapis.com/css?family=Lora:400,400i,700");
+2
+​
+3
+@function strip-unit($value) {
+4
+  @return $value / ($value * 0 + 1);
+5
+}
+6
+​
+7
+@mixin fluid-type($min-font-size, $max-font-size, $min-vw, $max-vw) {
+8
+  $u1: unit($min-vw);
+9
+  $u2: unit($max-vw);
+10
+  $u3: unit($min-font-size);
+11
+  $u4: unit($max-font-size);
+12
+​
+13
+  @if $u1 == $u2 and $u1 == $u3 and $u1 == $u4 {
+14
+    & {
+15
+      font-size: $min-font-size;
+16
+      @media screen and (min-width: $min-vw) {
+17
+        font-size: calc(#{$min-font-size} + #{strip-unit($max-font-size - $min-font-size)} * ((100vw - #{$min-vw}) / #{strip-unit($max-vw - $min-vw)}));
+18
+      }
+19
+      @media screen and (min-width: $max-vw) {
+20
+        font-size: $max-font-size;
+21
+      }
+22
+    }
+23
+  }
+24
+}
+25
+​
+26
+* {
+27
+  box-sizing: border-box;
+28
+}
+29
+​
+30
+html,
+31
+body {
+32
+  width: 100%;
+33
+  height: 100%;
+34
+  margin: 0;
+35
+  padding: 0;
+36
+  @include fluid-type(16px, 20px, 576px, 992px)
+37
+}
+38
+​
+39
+body {
+40
+  display: flex;
+JS
+ 
+JS Options
+
+1
+const NUMB = 80,
+2
+      MAXSPEED = 0.08,
+3
+      SIZE = 4,
+4
+      WIDTH = 500,
+5
+      HEIGHT = 500
+6
+​
+7
+​
+8
+const c = document.createElement('canvas'),
+9
+      ctx = c.getContext('2d')
+10
+​
+11
+​
+12
+c.width = 500
+13
+c.height = 500
+14
+ctx.translate(WIDTH/2, HEIGHT/2)
+15
+document.getElementById('wrapper').appendChild(c)
+16
+​
+17
+​
+18
+const particles = new Array(NUMB).fill().map((p, i) => {
+19
+  return {
+20
+    angle: 0,
+21
+    speed: i/NUMB*MAXSPEED,
+22
+    radius: i/NUMB*Math.max(WIDTH, HEIGHT)/2,
+23
+    colour: `hsl(${i/NUMB*360}, 80%, 50%)` // Fancy english, eh ?
+24
+  }
+25
+})
+26
+​
+27
+​
+28
+const draw = _ => {
+29
+  ctx.globalAlpha = 0.6
+30
+  ctx.fillStyle = '#fff'
+31
+  ctx.fillRect(-WIDTH/2, -HEIGHT/2, WIDTH, HEIGHT)
+32
+  
+33
+  for (let p of particles) {
+34
+    p.angle += p.speed
+35
+    ctx.beginPath()
+36
+    ctx.arc(p.radius*Math.cos(p.angle), p.radius*Math.sin(p.angle), SIZE, 0, 2*Math.PI)
+37
+    ctx.fillStyle = p.colour
+38
+    ctx.fill()
+39
+  }
+40
+  
+41
+  requestAnimationFrame(draw)
+42
+}
+43
+​
+44
+​
+45
+requestAnimationFrame(draw)
+
+Console
+Assets
+Comments
+
+Run and Scale Apps in Seconds on DigitalOcean. Try it free with $100 credit.
+Share  
+Export   Embed
