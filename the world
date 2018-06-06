@@ -1,0 +1,68 @@
+var canvas = d3.select("canvas");
+
+var ctx = canvas.node().getContext("2d");
+
+var canvasWidth = +canvas.attr("width"),
+  canvasHeight = +canvas.attr("height");
+
+var projection = d3
+  .geoPatterson()
+  .translate([canvasWidth / 2, canvasHeight / 2])
+  .scale((canvasWidth - 20) / (2 * Math.PI));
+
+var geoPathGenerator = d3
+  .geoPath()
+  .projection(projection)
+  .context(ctx)
+  .pointRadius(1.5);
+
+d3
+  .json("https://unpkg.com/world-atlas@1.1.4/world/110m.json")
+  .then(function(loadedTopoJson) {
+    var worldGeoJson = topojson.feature(loadedTopoJson, loadedTopoJson.objects.land);
+
+    var circlesMultipointGeometry = {
+      type: "MultiPoint",
+      coordinates: []
+    };
+  
+    var longitude,
+        latitude;
+
+    for (longitude = -180; longitude < 180; longitude += 2) {
+      for (latitude = -85; latitude < 85; latitude += 2) {
+        circlesMultipointGeometry.coordinates.push([longitude, latitude]);
+      }
+    }
+
+    ctx.lineJoin = "round";
+    ctx.lineCap = "round";
+    ctx.lineWidth = 0.75;
+
+    d3.timer(function(elapsed) {
+      ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+      projection.rotate([0, 90, elapsed * -0.003]);
+
+      ctx.beginPath();
+      ctx.fillStyle = "deepskyblue";
+      geoPathGenerator(circlesMultipointGeometry);
+      ctx.fill();
+      ctx.closePath();
+
+      ctx.beginPath();
+      ctx.strokeStyle = "deeppink";
+      ctx.fillStyle = "white";
+      geoPathGenerator(worldGeoJson);
+      ctx.fill();
+      ctx.stroke();
+      ctx.closePath();
+    });
+  });
+
+// the html part 
+<canvas width="960" height="600"></canvas>
+
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="https://unpkg.com/d3-geo-projection@2.4.0/build/d3-geo-projection.min.js"></script>
+<script src="https://unpkg.com/topojson-client@3.0.0/dist/topojson-client.min.js"></script>
