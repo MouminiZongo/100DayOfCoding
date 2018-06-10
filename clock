@@ -1,0 +1,101 @@
+
+$duration: 4s;
+
+.clock {
+  height: 2em;
+  width: 2em;
+  font-size: 20vmin;
+  color: #FFF;
+  
+  &:before, &:after {
+    $size: .1em; //2vmin;
+    content: '';
+    height: $size;
+    width: $size;
+    border-radius: 50%;
+    position: absolute;
+    color: white;
+    top: 0;
+    left: 0;
+    box-shadow:
+      -#{$size} -#{$size} currentcolor,
+  2em -#{$size} currentcolor,
+  -#{$size} 2em currentcolor,
+      2em 2em currentcolor;
+  }
+
+  &:after {
+    transform: rotate(45deg);
+    transform-origin: 1em 1em;
+    opacity: .5;
+  }
+}
+
+.hand {
+  display: block;
+  width: .2em;
+  height: 1em;
+  border-radius: .2em;
+  background: currentColor;
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  margin: 0 -.1em -.1em;
+  transform-origin: center calc(100% - .1em);
+  animation-duration: $duration;
+  animation-timing-function: cubic-bezier(.48,.07,.5,1.4);
+  animation-iteration-count: infinite;
+}
+
+
+.hour {
+  opacity: .8;
+  height: .6em;
+  animation-name: hour-move;
+}
+
+.minute {
+  animation-name: minute-move;
+  animation-duration: $duration/4; 
+}
+
+@keyframes minute-movex {
+  0% { transform: rotate(0turn); }
+  90%, 100% { transform: rotate(1turn); }
+}
+
+@keyframes minute-move {
+  0%, 5% { transform: rotate(0turn); }
+  90% {
+    transform: rotate(1.0001turn);
+    animation-timing-function: cubic-bezier(.9, 0, .1, 1);
+  }
+  100% {
+    transform: rotate(1turn);
+  }
+}
+
+@keyframes hour-move {
+  0% { transform: rotate(0turn); }
+  25% { transform: rotate(.25turn); }
+  50% { transform: rotate(.5turn); }
+  75% { transform: rotate(.75turn); }
+  100% { transform: rotate(1turn); }
+}
+// ......
+
+*, *:before, *:after {
+  box-sizing: border-box;
+  position: relative;
+}
+
+
+
+body, html {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #6C49F0;
+}
