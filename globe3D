@@ -1,0 +1,66 @@
+ // . THIS IS THE JS PART
+
+// Get the container to hold the IO globe
+var container = document.getElementById( "globalArea" );
+// Create Gio.controller
+var controller = new GIO.Controller( container );
+// Add data
+controller.addData( data );
+// Initialize and render the globe
+controller.init();
+
+
+// THIS IS THE CSS PART 
+
+html, body {
+
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+
+}
+
+header {
+
+    position: absolute;
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    color: white;
+    z-index: 1000;
+
+}
+
+#globalArea {
+  
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+a {
+  color: #ff0000;
+}
+
+// THIS IS THE HTML PART
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello World (Simplest Usage) / Gio.js</title>
+     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://threejs.org/build/three.min.js"></script>
+  <script src="https://cdn.rawgit.com/syt123450/giojs/de5fd34a/build/gio.min.js"></script>
+  <!-- load data in this data script -->
+  <script src="https://cdn.rawgit.com/syt123450/giojs/09216909/assets/data/sampleData.js"></script>
+</head>
+<body>
+
+<header>A demo showing the simplest usage of <a target="_blank" href="https://github.com/syt123450/giojs">Gio.js</a></header>
+<!--Create a <div> where the globe will be rendered -->
+<div id="globalArea"></div>
+
+</body>
+</html>
