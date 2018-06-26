@@ -1,0 +1,24 @@
+
+ python3
+ downloadXkcd.py - Downloads every single XKCD comic.
+
+import requests, os, bs4
+
+--snip--
+
+     Find the URL of the comic image.
+    comicElem = soup.select('#comic img')
+    if comicElem == []:
+         print('Could not find comic image.')
+    else:
+         try:
+             comicUrl = 'http:' + comicElem[0].get('src')
+             # Download the image.
+             print('Downloading image %s...' % (comicUrl))
+             res = requests.get(comicUrl)
+             res.raise_for_status()
+         except requests.exceptions.MissingSchema:
+             # skip this comic
+             prevLink = soup.select('a[rel="prev"]')[0]
+             url = 'http://xkcd.com' + prevLink.get('href')
+             continue
